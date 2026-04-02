@@ -9,7 +9,6 @@ async function getSystemInfo() {
     const memUsed = memTotal - memFree;
     const networkInterfaces = os.networkInterfaces();
 
-    
     let googlePing = "N/A";
     let githubPing = "N/A";
     let googlePing2 = "N/A";
