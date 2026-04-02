@@ -10,7 +10,9 @@ module.exports = {
     async execute(interaction) {
         try {
             const systemInfo = await getSystemInfo();
+            console.log(systemInfo);
             const embed = createSystemEmbed(systemInfo);
+            console.log(embed);
             await interaction.reply({ embeds: [embed] });
         } catch (error) {
             console.error('Failed to execute /systeminfo:', error);
