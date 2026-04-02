@@ -1,3 +1,5 @@
+const { EmbedBuilder } = require('discord.js');
+
 function createSystemEmbed(systemInfo) {
     return new EmbedBuilder()
         .setColor('#0099ff')
@@ -18,3 +20,5 @@ function createSystemEmbed(systemInfo) {
         .setTimestamp()
         .setFooter({ text: 'System Monitoring' });
 }
+
+module.exports = { createSystemEmbed };
