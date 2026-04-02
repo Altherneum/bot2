@@ -2,13 +2,15 @@
 Bot using Discord.js
 ## Installation
 ```bash
+# Clone repo
 git clone https://github.com/Altherneum/bot2
+# Set bot token
 NEW_TOKEN=ABCD_BOT_TOKEN
 sed -i 's/YOUR_BOT_TOKEN_HERE/'$NEW_TOKEN'/g' bot2/config.json
-
+# Get discord NPM package
 npm init -y
 npm install discord.js
-
+# start nodeJS
 node bot2/index.js
 ```
 ## How to Use the Bot
