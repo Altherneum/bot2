@@ -89,9 +89,4 @@ async function ping2(website){
     });
 }
 
-async function main(){
-    console.log(await getSystemInfo());
-}
-main();
-
 module.exports = { getSystemInfo };
