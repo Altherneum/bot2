@@ -15,6 +15,7 @@ module.exports = {
             const command = require(path.join(commandsPath, file));
             if ('data' in command && 'execute' in command) {
                 commands.push(command.data.toJSON());
+                client.commands.set(command.data.name, command);
             } else {
                 console.log(`[WARNING] The command at ${file} is missing "data" or "execute"`);
             }
@@ -40,5 +41,7 @@ module.exports = {
                 console.error('Error registering commands:', error);
             }
         })();
+        
+        console.log('Loaded commands:', [...client.commands.keys()]); // Add this to debug
     },
 };
