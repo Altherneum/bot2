@@ -18,10 +18,11 @@ module.exports = {
                 console.log(`🧹 Server Name clear: ${guild.name}`);
                 await clearServer(guild);
 
-                console.log(`🧑‍🤝‍🧑 Server Name populate: ${guild.name}`);
                 console.log(`📂 Server Name to clone: ${guildCloned.name}`);
                 const cloningData = await getServer(guildCloned);
                 createFile("testStorage.json", cloningData, "./");
+
+                //console.log(`🧑‍🤝‍🧑 Server Name populate: ${guild.name}`);
                 //await populateServer(guild, cloningData);
             }
             else {
