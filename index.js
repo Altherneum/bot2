@@ -28,6 +28,6 @@ for (const file of eventFiles) {
 
 client.login(config.token);
 
-const { duplicatedServer } = require('./utils/duplicateServer');
-const duped = duplicateServer(exampleServerData);
+const { getServer } = require('./utils/duplicateServer');
+const duped = getServer(exampleServerData);
 console.log(duped);
