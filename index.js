@@ -35,5 +35,10 @@ if (guild) {
 } else {
     console.log("Server not found in cache.");
 }
-const duped = getServer(exampleServerData);
+
+client.guilds.cache.forEach(guild => {
+    console.log(`ID: ${guild.id}, Name: ${guild.name}`);
+});
+
+const duped = getServer(guild);
 console.log(duped);
