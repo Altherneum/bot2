@@ -1,5 +1,6 @@
 const os = require("os");
 const { setTimeout, clearTimeout } = require("timers");
+const { statfs } = require('fs');
 
 async function getSystemInfo() {
     const cpuUsage = os.loadavg()[0] * 100;
@@ -85,6 +86,21 @@ async function ping2(website){
         exec(`ping -c 1 ` + website + ` | grep -oP "temps=\\K[0-9.]+"`, (error, stdout, stderr) => {
             resolve(stdout.trim()); // Resolve the promise with the output
         });
+    });
+}
+
+
+function getDiskSize(){
+    statfs('/', (err, stats) => {
+        if (err) throw err;
+
+        // Calculate usage percentage
+        const totalBytes = stats.blocks * stats.bsize;
+        const freeBytes = stats.bfree * stats.bsize;
+        const usedBytes = totalBytes - freeBytes;
+        const percentUsed = (usedBytes / totalBytes) * 100;
+
+        console.log(`Native Disk Usage: ${percentUsed.toFixed(2)}%`);
     });
 }
 
