@@ -11,13 +11,15 @@ module.exports = {
         const commandsPath = path.join(__dirname, '../commands');
         const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
 
+        console.log("✅ Chargement des commandes");
         for (const file of commandFiles) {
             const command = require(path.join(commandsPath, file));
             if ('data' in command && 'execute' in command) {
                 commands.push(command.data.toJSON());
                 client.commands.set(command.data.name, command);
+                console.log("  ✅ Chargement de la commande " + command.data.name + " ; " + file);
             } else {
-                console.warn("🚩 The command at ${file} is missing 'data' or 'execute'");
+                console.warn("  🚩 The command at ${file} is missing 'data' or 'execute'");
             }
         }
 
@@ -38,12 +40,12 @@ module.exports = {
                 // For global commands (takes up to 1 hour)
                 await rest.put(Routes.applicationCommands(clientId), { body: commands });
 
-                console.log('✅ Successfully reloaded application (/) commands.');
+                console.log('  ✅ Successfully reloaded application (/) commands.');
             } catch (error) {
-                console.error('🚩 Error registering commands:', error);
+                console.error('  🚩 Error registering commands:', error);
             }
         })();
 
-        console.log('📚 Loaded commands:', [...client.commands.keys()]);
+        console.log('  📚 Loaded commands:', [...client.commands.keys()]);
     },
 };

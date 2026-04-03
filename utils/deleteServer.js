@@ -26,7 +26,7 @@ async function clearServer(server) {
         }
     }
 
-    console.log('Server cleared: all deletable channels and roles removed.');
+    console.log('🧹 Server cleared: all deletable channels and roles removed.');
 }
 
 module.exports = { clearServer };

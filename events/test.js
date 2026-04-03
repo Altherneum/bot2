@@ -21,7 +21,7 @@ module.exports = {
                 console.log(`🧑‍🤝‍🧑 Server Name populate: ${guild.name}`);
                 console.log(`📂 Server Name to clone: ${guildCloned.name}`);
                 const cloningData = await getServer(guildCloned);
-                createFile("testStorage", cloningData, "./");
+                createFile("testStorage.json", cloningData, "./");
                 //await populateServer(guild, cloningData);
             }
             else {
