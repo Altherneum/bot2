@@ -2,8 +2,8 @@ const { Client, GatewayIntentBits } = require('discord.js');
 
 // Function to duplicate a server into JSON
 async function getServer(server) {
-    await guild.channels.fetch();
-    await guild.threads.fetchActive();
+    await server.channels.fetch();
+    //await ""channel"".threads.fetchActive();
 
     return {
         name: server.name,
@@ -20,12 +20,12 @@ async function getServer(server) {
             name: role.name,
             color: role.color
         })),
-        threads: server.threads.cache.map(thread => ({
+        /* threads: server.threads.cache.map(thread => ({
             id: thread.id,
             parentId: thread.parentId,
             name: thread.name,
             permissions: thread.permissions
-        })),
+        })), */
         forumCategories: server.forumCategories.cache.map(category => ({
             id: category.id,
             name: category.name
