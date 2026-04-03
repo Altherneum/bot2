@@ -8,7 +8,9 @@ const client = new Client({
         GatewayIntentBits.Guilds,
         GatewayIntentBits.GuildMessages,
         GatewayIntentBits.MessageContent,
-        GatewayIntentBits.GuildMembers
+        GatewayIntentBits.GuildMembers,
+        GatewayIntentBits.GuildMessageReactions,
+        GatewayIntentBits.GuildScheduledEvents
     ]
 });
 
@@ -28,21 +30,25 @@ for (const file of eventFiles) {
 
 client.login(config.token);
 
+
 client.once('ready', () => {
     const { getServer } = require('./utils/duplicateServer');
-    const guild = client.guilds.cache.get('1081921426333909072');
-    if (guild) {
-       console.log(`Server Name: ${guild.name}`);
-        const channels = guild.channels.cache.map(channel => channel.name);
-        console.log(channels);
-        
-        console.log(getServer(guild));
+    async function getServerData(){
+        const guild = client.guilds.cache.get('1081921426333909072');
+        if (guild) {
+        console.log(`Server Name: ${guild.name}`);
+            const channels = guild.channels.cache.map(channel => channel.name);
+            console.log(channels);
+            
+            console.log(await getServer(guild));
 
-    } else {
-        console.log("Server not found in cache.");
+        } else {
+            console.log("Server not found in cache.");
+        }
+
+        client.guilds.cache.forEach(guild => {
+            console.log(`ID: ${guild.id}, Name: ${guild.name}`);
+        });
     }
-
-    client.guilds.cache.forEach(guild => {
-        console.log(`ID: ${guild.id}, Name: ${guild.name}`);
-    });
+    getServerData()
 });
