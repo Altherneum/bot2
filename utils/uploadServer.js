@@ -19,7 +19,7 @@ async function populateServer(server, template) {
 
     for (const roleData of sortedRoles) {
         try {
-            console.log("Création du rôle : " + roleData.name);
+            console.log("🕰 Création du rôle : " + roleData.name);
             const newRole = await server.roles.create({
                 name: roleData.name,
                 color: roleData.color,
@@ -29,9 +29,9 @@ async function populateServer(server, template) {
                 reason: 'Restored from backup',
             });
             roleMap.set(roleData.id, newRole.id);
-            console.log("Rôle crée : " + roleData.name);
+            console.log("📗 Rôle crée : " + roleData.name);
         } catch (err) {
-            console.warn(`Could not create role ${roleData.name}:`, err.message);
+            console.warn(`⚠️ Could not create role ${roleData.name}:`, err.message);
         }
     }
 
@@ -44,7 +44,7 @@ async function populateServer(server, template) {
     const categories = template.channels.filter(ch => ch.type === 'GUILD_CATEGORY');
     for (const catData of categories) {
         try {
-            console.log("Création de la catégorie : " + catData.name);
+            console.log("🕰 Création de la catégorie : " + catData.name);
             const parent = await server.channels.create({
                 name: catData.name,
                 type: ChannelType.GuildCategory,
@@ -56,10 +56,10 @@ async function populateServer(server, template) {
                 })) || [],
                 reason: 'Restored from backup',
             });
-            console.log("Catégorie crée : " + catData.name);
+            console.log("📗 Catégorie crée : " + catData.name);
             categoryMap.set(catData.id, parent);
         } catch (err) {
-            console.warn(`Could not create category ${catData.name}:`, err.message);
+            console.warn(`⚠️ Could not create category ${catData.name}:`, err.message);
         }
     }
 
@@ -100,9 +100,9 @@ async function populateServer(server, template) {
 
             await server.channels.create(channelOptions);
 
-            console.log("Création du salon : " + chData.name + " ; " + typeMap[chData.type]);
+            console.log("🕰 Création du salon : " + chData.name + " ; " + typeMap[chData.type]);
         } catch (err) {
-            console.warn(`Could not create channel ${chData.name}:`, err.message);
+            console.warn(`⚠️ Could not create channel ${chData.name}:`, err.message);
         }
     }
 

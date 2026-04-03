@@ -3,6 +3,7 @@ const { setTimeout, clearTimeout } = require("timers");
 const { statfs } = require('fs');
 
 async function getSystemInfo() {
+    console.log("🖥️ Information système en récupération")
     let message = "";
 
     message += "# Système"

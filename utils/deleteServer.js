@@ -4,10 +4,10 @@ async function clearServer(server) {
     // Delete all channels
     for (const channel of server.channels.cache.values()) {
         try {
+            console.log("⏰ Suppression du salon : " + channel.name);
             await channel.delete();
-            console.log("Suppression du salon : " + channel.name);
         } catch (err) {
-            console.warn(`Could not delete channel ${channel.name}:`, err.message);
+            console.warn(`⚠️ Could not delete channel ${channel.name}:`, err.message);
         }
     }
 
@@ -15,14 +15,14 @@ async function clearServer(server) {
     for (const role of server.roles.cache.values()) {
         if (role.name === '@everyone') continue;
         if (!role.editable) {
-            console.warn(`Skipping role ${role.name} (not editable - likely bot or higher role)`);
+            console.warn(`🛂 Skipping role ${role.name} (not editable - likely bot or higher role)`);
             continue;
         }
         try {
             await role.delete();
-            console.log("Suppression du rôle : " + role.name);
+            console.log("⏰ Suppression du rôle : " + role.name);
         } catch (err) {
-            console.warn(`Could not delete role ${role.name}:`, err.message);
+            console.warn(`⚠️ Could not delete role ${role.name}:`, err.message);
         }
     }
 

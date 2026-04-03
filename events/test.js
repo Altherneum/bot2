@@ -1,0 +1,30 @@
+const { Events } = require('discord.js');
+const { populateServer } = require('../utils/uploadServer');
+const { getServer } = require('../utils/duplicateServer');
+const { clearServer } = require('../utils/deleteServer');
+
+module.exports = {
+    name: Events.ClientReady,
+    once: true,
+    execute(client) {
+        async function test(){
+            const guild = client.guilds.cache.get('1489696430758170646');
+            const guildCloned = client.guilds.cache.get('1081921426333909072');
+
+            if (guild && guildCloned) {
+                console.log(`🧹 Server Name clear: ${guild.name}`);
+                await clearServer(guild);
+
+                console.log(`🧑‍🤝‍🧑 Server Name populate: ${guild.name}`);
+                console.log(`📂 Server Name to clone: ${guildCloned.name}`);
+                const cloningData = await getServer(guildCloned);
+                //console.log(cloningData);
+                await populateServer(guild, cloningData);
+            }
+            else {
+                console.log("⚠️ Server not found in cache.");
+            }
+        }
+        //test();
+    },
+};

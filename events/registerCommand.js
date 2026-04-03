@@ -44,6 +44,6 @@ module.exports = {
             }
         })();
 
-        console.log('ℹ️ Loaded commands:', [...client.commands.keys()]);
+        console.log('📚 Loaded commands:', [...client.commands.keys()]);
     },
 };
