@@ -74,7 +74,6 @@ async function getSystemInfo() {
     const uptime = formatUptime(os.uptime()); 
     message += "\n- " + uptime;
 
-
     return message;
 }
 
