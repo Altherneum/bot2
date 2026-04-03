@@ -17,7 +17,7 @@ async function getSystemInfo() {
     const totalBytes =  formatBytes(diskTable[0]);
     const freeBytes = formatBytes(diskTable[1]);
     const usedBytes = formatBytes(diskTable[2]);
-    const percentUsed = formatBytes(diskTable[3]);
+    const percentUsed = diskTable[3] + "%";
 
     let googlePing = "N/A";
     let githubPing = "N/A";
