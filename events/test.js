@@ -2,6 +2,7 @@ const { Events } = require('discord.js');
 const { populateServer } = require('../utils/uploadServer');
 const { getServer } = require('../utils/duplicateServer');
 const { clearServer } = require('../utils/deleteServer');
+const { createFile } = require('../utils/StoreFile');
 
 module.exports = {
     name: Events.ClientReady,
@@ -20,15 +21,15 @@ module.exports = {
                 console.log(`🧑‍🤝‍🧑 Server Name populate: ${guild.name}`);
                 console.log(`📂 Server Name to clone: ${guildCloned.name}`);
                 const cloningData = await getServer(guildCloned);
-                //console.log(cloningData);
-                await populateServer(guild, cloningData);
+                createFile("testStorage", cloningData, "./");
+                //await populateServer(guild, cloningData);
             }
             else {
                 console.log("⚠️ Server not found in cache.");
             }
         }
 
-        //test();
+        test();
         console.log("🪧 Fin des tests !");
     },
 };
