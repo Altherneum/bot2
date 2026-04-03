@@ -2,8 +2,7 @@ const { Client, GatewayIntentBits } = require('discord.js');
 
 // Function to duplicate a server into JSON
 async function getServer(server) {
-    await server.channels.fetch();
-    //await ""channel"".threads.fetchActive();
+    await server.channels.fetch(); //update cache
 
     return {
         name: server.name,
@@ -25,11 +24,14 @@ async function getServer(server) {
             parentId: thread.parentId,
             name: thread.name,
             permissions: thread.permissions
-        })), */
+        })), 
+
+        // They are inside channels already, type 15
+        // Need to update "server.channels.cache." to check if channel type is and get specific data
         forumCategories: server.forumCategories.cache.map(category => ({
             id: category.id,
             name: category.name
-        }))
+        }))*/
     };
 }
 
