@@ -1,7 +1,7 @@
 const { Client, GatewayIntentBits } = require('discord.js');
 
 // Function to duplicate a server into JSON
-async function getServer(server) {
+function getServer(server) {
   return {
     name: server.name,
     ownerId: server.ownerId,

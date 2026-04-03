@@ -36,7 +36,7 @@ client.once('ready', () => {
         const channels = guild.channels.cache.map(channel => channel.name);
         console.log(channels);
         
-        console.log(await getServer(guild));
+        console.log(getServer(guild));
 
     } else {
         console.log("Server not found in cache.");
