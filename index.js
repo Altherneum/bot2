@@ -32,9 +32,12 @@ client.once('ready', () => {
     const { getServer } = require('./utils/duplicateServer');
     const guild = client.guilds.cache.get('1081921426333909072');
     if (guild) {
-        console.log(`Server Name: ${guild.name}`);
-        const duped = getServer(guild);
-        console.log(duped);
+       console.log(`Server Name: ${guild.name}`);
+        const channels = guild.channels.cache.map(channel => channel.name);
+        console.log(channels);
+        
+        console.log(await getServer(guild));
+
     } else {
         console.log("Server not found in cache.");
     }

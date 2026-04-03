@@ -1,29 +1,29 @@
 const { Client, GatewayIntentBits } = require('discord.js');
 
 // Function to duplicate a server into JSON
-function getServer(server) {
+async function getServer(server) {
   return {
     name: server.name,
     ownerId: server.ownerId,
-    channels: server.channels.map(channel => ({
+    channels: server.channels.cache.map(channel => ({
       id: channel.id,
       name: channel.name,
       type: channel.type,
       permissions: channel.permissions
     })),
     members: server.members, // Simplified - consider a proper member management system
-    roles: server.roles.map(role => ({
+    roles: server.roles.cache.map(role => ({
       id: role.id,
       name: role.name,
       color: role.color
     })),
-    threads: server.threads.map(thread => ({
+    threads: server.threads.cache.map(thread => ({
       id: thread.id,
       parentId: thread.parentId,
       name: thread.name,
       permissions: thread.permissions
     })),
-    forumCategories: server.forumCategories.map(category => ({
+    forumCategories: server.forumCategories.cache.map(category => ({
       id: category.id,
       name: category.name
     }))
