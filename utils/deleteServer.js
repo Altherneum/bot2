@@ -5,6 +5,7 @@ async function clearServer(server) {
     for (const channel of server.channels.cache.values()) {
         try {
             await channel.delete();
+            console.log("Suppression du salon : " + channel.name);
         } catch (err) {
             console.warn(`Could not delete channel ${channel.name}:`, err.message);
         }
@@ -19,6 +20,7 @@ async function clearServer(server) {
         }
         try {
             await role.delete();
+            console.log("Suppression du rôle : " + role.name);
         } catch (err) {
             console.warn(`Could not delete role ${role.name}:`, err.message);
         }

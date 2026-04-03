@@ -62,11 +62,13 @@ client.once('ready', () => {
         const guildCloned = client.guilds.cache.get('1081921426333909072');
 
         if (guild && guildCloned) {
-            console.log(`Server Name to clone: ${guildCloned.name}`);
-            console.log(`Server Name populate: ${guild.name}`);
-            
+            console.log(`Server Name clear+populate: ${guild.name}`);
             await clearServer(guild);
-            //populateServer(guild, await getServer(guildCloned));
+
+            console.log(`Server Name to clone: ${guildCloned.name}`);
+            const cloningData = await getServer(guildCloned);
+            //console.log(cloningData);
+            await populateServer(guild, cloningData);
         }
         else {
             console.log("Server not found in cache.");
