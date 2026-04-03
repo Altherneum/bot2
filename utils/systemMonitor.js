@@ -3,59 +3,79 @@ const { setTimeout, clearTimeout } = require("timers");
 const { statfs } = require('fs');
 
 async function getSystemInfo() {
+    let message = "";
+
+    message += "# Système"
+    message += "\n\n"
+    message += "\n# 🖱️ CPU"
     const cpuUsage = os.loadavg()[0] * 100;
+    message += "\n- " + cpuUsage + "%";
     const cpuUsage15min = os.loadavg()[2] * 100;
+    message += "\n  - Il y a 15 minutes : " + cpuUsage + "%";
 
-    const memTotal = os.totalmem(); 
+    message += "\n\n"
+    message += "\n## 📝 RAM"
+    const memTotal = os.totalmem();
+    message += "\n- total : " + formatBytes(totalmem);
     const memFree = os.freemem();
+    message += "\n- libre : " + formatBytes(memFree);
     const memUsed = memTotal - memFree;
+    message += "\n- utilisé : " + formatBytes(memUsed);
+    const memPercentUsed = ((memUsed * 100 / memTotal)).toFixed(2);
+    message += "\n  - " + formatBytes(memUsed) + "%";
 
+    /*
     const networkInterfaces = os.networkInterfaces();
-    console.log(networkInterfaces);
+    console.log(networkInterfaces); 
+    message += networkInterfaces; 
+    */
 
     const diskTable = await getDiskSize();
+    message += "\n\n"
+    message += "\n## 💾 Disque"
     const totalBytes =  formatBytes(diskTable[0]);
+    message += "\n- Disque total : " + totalBytes;
     const freeBytes = formatBytes(diskTable[1]);
+    message += "\n- Disque libre : " + freeBytes;
     const usedBytes = formatBytes(diskTable[2]);
+    message += "\n- Disque utilisé : " + usedBytes;
     const percentUsed = diskTable[3] + "%";
+    message += "\n  - " + percentUsed;
 
     let googlePing = "N/A";
     let githubPing = "N/A";
     let googlePing2 = "N/A";
     let githubPing2 = "N/A";
+    message += "\n\n"
+    message += "\n## 🛜 PING"
 
     try {
+        message += "\n### 🔠 Google"
         const googlePingResult = await ping("google.com");
         const googlePingResult2 = await ping2("google.com");
         googlePing = googlePingResult + " ms";
+        message += "\n- Fetch : " + googlePing;
         googlePing2 = googlePingResult2 + " ms";
+        message += "\n- ICMP : " + googlePing2;
 
+        message += "\n### 🐙 Github"
         const githubPingResult = await ping("github.com");
         const githubPingResult2 = await ping2("github.com");
         githubPing = githubPingResult + ` ms`;
+        message += "\n- Fetch : " + githubPing;
         githubPing2 = githubPingResult2 + ` ms`;
+        message += "\n- ICMP : " + githubPing2;
     } catch (error) {
         console.error("Error measuring pings:", error);
     }
 
-    return {
-        LoadNow: cpuUsage + "%",
-        LoadAvg: cpuUsage15min + "%",
-        googlePing,
-        googlePing2,
-        githubPing,
-        githubPing2,
-        uptime: formatUptime(os.uptime()),
-        totalRam: formatBytes(memTotal),
-        usedRam: formatBytes(memUsed), 
-        ramUsage: ((memUsed * 100 / memTotal)).toFixed(2) + "%",
-        ramFree: formatBytes(memFree),
-        networkInterfaces: Object.values(networkInterfaces),
-        diskTotal: totalBytes,
-        diskFree: freeBytes,
-        diskUsed: usedBytes,
-        diskPercentUsed: percentUsed
-    };
+    message += "\n\n"
+    message += "\n## 🕰️ UpTime"
+    const uptime = formatUptime(os.uptime()); 
+    message += "\n- " + uptime;
+
+
+    return message;
 }
 
 function formatUptime(uptime) {

@@ -1,28 +1,18 @@
 const { EmbedBuilder } = require('discord.js');
 
-function createSystemEmbed(systemInfo) {
-    return new EmbedBuilder()
-        .setColor('#0099ff')
+function createEmbed(message, footer, footerURL) {
+        return new EmbedBuilder()
+        .setColor("#FFFF00")
         .setTitle('📊 System Information')
-        .addFields(
-            { name: 'CPU Load (Now)', value: systemInfo.LoadNow, inline: true },
-            { name: 'CPU Load (15m)', value: systemInfo.LoadAvg, inline: true },
-            { name: 'Google Ping (fetch)', value: systemInfo.googlePing, inline: true },
-            { name: 'GitHub Ping (fetch)', value: systemInfo.githubPing, inline: true },
-            { name: 'Google Ping (CLI)', value: systemInfo.googlePing2, inline: true },
-            { name: 'GitHub Ping (CLI)', value: systemInfo.githubPing2, inline: true },
-            { name: 'Uptime', value: systemInfo.uptime, inline: false },
-            { name: 'Total RAM', value: systemInfo.totalRam, inline: true },
-            { name: 'Used RAM', value: systemInfo.usedRam, inline: true },
-            { name: 'Free RAM', value: systemInfo.ramFree, inline: true },
-            { name: 'RAM Usage', value: systemInfo.ramUsage, inline: true },
-            { name: 'Total Disk', value: systemInfo.diskTotal, inline: true },
-            { name: 'Free Disk', value: systemInfo.diskFree, inline: true },
-            { name: 'Used Disk', value: systemInfo.diskUsed, inline: true },
-            { name: 'Pecentage Disk usage', value: systemInfo.diskPercentUsed, inline: true }
-        )
+        .setDescription(message)
         .setTimestamp()
-        .setFooter({ text: 'System Monitoring' });
+        .setFooter({ 
+            text: footer,
+            iconURL: footerURL,
+ });
+
 }
 
-module.exports = { createSystemEmbed };
+module.exports = { createEmbed };
+
+

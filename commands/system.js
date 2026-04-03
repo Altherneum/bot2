@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('discord.js');
 const { getSystemInfo } = require('../utils/systemMonitor');
-const { createSystemEmbed } = require('../utils/embedBuilder');
+const { createEmbed } = require('../utils/embedBuilder');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -10,9 +10,7 @@ module.exports = {
     async execute(interaction) {
         try {
             const systemInfo = await getSystemInfo();
-            const embed = createSystemEmbed(systemInfo);
-            console.log(embed);
-            console.log(systemInfo);
+            const embed = createEmbed(systemInfo, "System Monitor", "https://slate.dan.onl/slate.png");
             await interaction.reply({ embeds: [embed] });
         } catch (error) {
             console.error('Failed to execute /systeminfo:', error);
