@@ -11,82 +11,37 @@ async function getServer(server) {
             id: channel.id,
             name: channel.name,
             type: channel.type,
-            permissions: channel.permissions
+            permissions: Array.from(channel.permissionOverwrites.cache.values()).map(overwrite => ({
+                id: overwrite.id,
+                type: overwrite.type,
+                allow: overwrite.allow.toArray(),
+                deny: overwrite.deny.toArray()
+            })),
+            position: channel.position,
+            topic: channel.topic,
+            nsfw: channel.nsfw,
+            parentId: channel.parentId,
+            rateLimitPerUser: channel.rateLimitPerUser,
+            availableTags: channel.availableTags,
+            defaultAutoArchiveDuration: channel.defaultAutoArchiveDuration,
+            defaultForumLayout: channel.defaultForumLayout,
+            defaultReactionEmoji: channel.defaultReactionEmoji,
+            defaultTagSetting: channel.defaultTagSetting,
+            defaultThreadRateLimitPerUser: channel.defaultThreadRateLimitPerUser,
+
         })),
-        members: server.members, // Simplified - consider a proper member management system
+        members: server.members, // Simplified
         roles: server.roles.cache.map(role => ({
             id: role.id,
             name: role.name,
-            color: role.color
+            color: role.color,
+            colorString: role.hexColor,
+            mentionable: role.mentionable,
+            position: role.position,
+            hoist: role.hoist,
+            permissions: role.permissions
         })),
-        /* threads: server.threads.cache.map(thread => ({
-            id: thread.id,
-            parentId: thread.parentId,
-            name: thread.name,
-            permissions: thread.permissions
-        })), 
-
-        // They are inside channels already, type 15
-        // Need to update "server.channels.cache." to check if channel type is and get specific data
-        forumCategories: server.forumCategories.cache.map(category => ({
-            id: category.id,
-            name: category.name
-        }))*/
     };
 }
 
-
-// Function to create a server from JSON
-function createServerFromJson(jsonData) {
-  const server = {
-    name: jsonData.name,
-    ownerId: jsonData.ownerId,
-    channels: [],
-    members: [],
-    roles: [],
-    threads: [],
-    forumCategories: []
-  };
-
-  // Populate channels
-  jsonData.channels.forEach(channelData => {
-    server.channels.push({
-      id: channelData.id,
-      name: channelData.name,
-      type: channelData.type,
-      permissions: channelData.permissions
-    });
-  });
-
-  // Populate roles (similar to channels)
-  jsonData.roles.forEach(roleData => {
-    server.roles.push({
-      id: roleData.id,
-      name: roleData.name,
-      color: roleData.color
-    });
-  });
-
-  // Populate threads
-  jsonData.threads.forEach(threadData => {
-    server.threads.push({
-      id: threadData.id,
-      parentId: threadData.parentId,
-      name: threadData.name,
-      permissions: threadData.permissions
-    });
-  });
-
-  // Populate forum categories
-  jsonData.forumCategories.forEach(categoryData => {
-    server.forumCategories.push({
-      id: categoryData.id,
-      name: categoryData.name
-    });
-  });
-
-
-  return server;
-}
-
-module.exports = { createServerFromJson, getServer };
+module.exports = { getServer };

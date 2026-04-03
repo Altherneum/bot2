@@ -32,13 +32,14 @@ client.login(config.token);
 
 
 client.once('ready', () => {
+    /*
     const { getServer } = require('./utils/duplicateServer');
     async function getServerData(){
         const guild = client.guilds.cache.get('1081921426333909072');
         if (guild) {
         console.log(`Server Name: ${guild.name}`);
 
-            console.log(await getServer(guild));
+            console.log(JSON.stringify(await getServer(guild), null, 2));
 
         } else {
             console.log("Server not found in cache.");
@@ -49,4 +50,31 @@ client.once('ready', () => {
         });
     }
     getServerData()
+    */
+
+
+    const { populateServer } = require('./utils/uploadServer');
+    const { getServer } = require('./utils/duplicateServer');
+    const { clearServer } = require('./utils/deleteServer');
+
+    async function test(){
+        const guild = client.guilds.cache.get('1489696430758170646');
+        const guildCloned = client.guilds.cache.get('1081921426333909072');
+
+        if (guild && guildCloned) {
+            console.log(`Server Name to clone: ${guildCloned.name}`);
+            console.log(`Server Name populate: ${guild.name}`);
+            
+            await clearServer(guild);
+            //populateServer(guild, await getServer(guildCloned));
+        }
+        else {
+            console.log("Server not found in cache.");
+        }
+
+        client.guilds.cache.forEach(guild => {
+            console.log(`ID: ${guild.id}, Name: ${guild.name}`);
+        });
+    }
+    test();
 });
