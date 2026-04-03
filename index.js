@@ -28,16 +28,18 @@ for (const file of eventFiles) {
 
 client.login(config.token);
 
-const { getServer } = require('./utils/duplicateServer');
-const guild = client.guilds.cache.get('1081921426333909072');
-if (guild) {
-    console.log(`Server Name: ${guild.name}`);
-    const duped = getServer(guild);
-    console.log(duped);
-} else {
-    console.log("Server not found in cache.");
-}
+client.once('ready', () => {
+    const { getServer } = require('./utils/duplicateServer');
+    const guild = client.guilds.cache.get('1081921426333909072');
+    if (guild) {
+        console.log(`Server Name: ${guild.name}`);
+        const duped = getServer(guild);
+        console.log(duped);
+    } else {
+        console.log("Server not found in cache.");
+    }
 
-client.guilds.cache.forEach(guild => {
-    console.log(`ID: ${guild.id}, Name: ${guild.name}`);
+    client.guilds.cache.forEach(guild => {
+        console.log(`ID: ${guild.id}, Name: ${guild.name}`);
+    });
 });
