@@ -21,6 +21,20 @@ npm install discord.js@14.26.0
 # start nodeJS
 node bot2/index.js
 ```
+## Update
+```
+cp bot2/config.json config.json;
+
+rm -rf bot2/
+
+git clone https://github.com/Altherneum/bot2
+
+cp config.json bot2/config.json
+rm config.json
+
+# start nodeJS
+node bot2/index.js
+```
 ## How to Use the Bot
 - Create a new Discord application at [Discord Developer Portal](https://discord.com/developers/applications)
 - Add your bot token to config.json

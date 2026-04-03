@@ -16,13 +16,13 @@ async function getSystemInfo() {
     message += "\n\n"
     message += "\n## 📝 RAM"
     const memTotal = os.totalmem();
-    message += "\n- total : " + formatBytes(totalmem);
+    message += "\n- total : " + formatBytes(memTotal);
     const memFree = os.freemem();
     message += "\n- libre : " + formatBytes(memFree);
     const memUsed = memTotal - memFree;
     message += "\n- utilisé : " + formatBytes(memUsed);
     const memPercentUsed = ((memUsed * 100 / memTotal)).toFixed(2);
-    message += "\n  - " + formatBytes(memUsed) + "%";
+    message += "\n  - " + memPercentUsed + "%";
 
     /*
     const networkInterfaces = os.networkInterfaces();
