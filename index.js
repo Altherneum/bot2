@@ -29,5 +29,5 @@ for (const file of eventFiles) {
 client.login(config.token);
 
 const { duplicatedServer } = require('./utils/duplicateServer');
-const duplicatedServer = duplicateServer(exampleServerData);
-console.log(duplicatedServer);
+const duped = duplicateServer(exampleServerData);
+console.log(duped);
