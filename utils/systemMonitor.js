@@ -5,10 +5,19 @@ const { statfs } = require('fs');
 async function getSystemInfo() {
     const cpuUsage = os.loadavg()[0] * 100;
     const cpuUsage15min = os.loadavg()[2] * 100;
+
     const memTotal = os.totalmem(); 
     const memFree = os.freemem();
     const memUsed = memTotal - memFree;
+
     const networkInterfaces = os.networkInterfaces();
+    console.log(networkInterfaces);
+
+    const diskTable = await getDiskSize();
+    const totalBytes =  diskTable[0];
+    const freeBytes = diskTable[1];
+    const usedBytes = diskTable[2];
+    const percentUsed = diskTable[3];
 
     let googlePing = "N/A";
     let githubPing = "N/A";
@@ -41,7 +50,11 @@ async function getSystemInfo() {
         usedRam: formatBytes(memUsed), 
         ramUsage: ((memUsed * 100 / memTotal)).toFixed(2) + "%",
         ramFree: formatBytes(memFree),
-        networkInterfaces: Object.values(networkInterfaces) 
+        networkInterfaces: Object.values(networkInterfaces),
+        diskTotal: totalBytes,
+        diskFree: freeBytes,
+        diskUsed: usedBytes,
+        diskPercentUsed: percentUsed
     };
 }
 
@@ -63,21 +76,19 @@ function formatBytes(bytes) {
 async function ping(website) {
   const startTime = Date.now(); 
 
-  try {
-    const response = await fetch("https://" + website);
-    if (!response.ok) {
-      throw new Error("HTTP error! Status: " + response.status);
+    try {
+        const response = await fetch("https://" + website);
+        if (!response.ok) {
+            throw new Error("HTTP error! Status: " + response.status);
+        }
+        const endTime = Date.now(); 
+        const delayMs = endTime - startTime;
+        return delayMs;
     }
-    const endTime = Date.now(); 
-    const delayMs = endTime - startTime;
-
-    console.log(website + " Ping successful, Delay: " + delayMs + "ms");
-    return delayMs;
-
-  } catch (error) {
-    console.error("Error pinging " + website + ":", error);
-    return null; 
-  }
+    catch (error) {
+        console.error("Error pinging " + website + ":", error);
+        return null; 
+    }
 }
 
 async function ping2(website){
@@ -91,16 +102,19 @@ async function ping2(website){
 
 
 function getDiskSize(){
-    statfs('/', (err, stats) => {
-        if (err) throw err;
+    return new Promise((resolve, reject) => {
+        statfs('/', (err, stats) => {
+            if (err) throw err;
 
-        // Calculate usage percentage
-        const totalBytes = stats.blocks * stats.bsize;
-        const freeBytes = stats.bfree * stats.bsize;
-        const usedBytes = totalBytes - freeBytes;
-        const percentUsed = (usedBytes / totalBytes) * 100;
+            const totalBytes = stats.blocks * stats.bsize;
+            const freeBytes = stats.bfree * stats.bsize;
+            const usedBytes = totalBytes - freeBytes;
+            const percentUsed = (usedBytes / totalBytes) * 100;
 
-        console.log(`Native Disk Usage: ${percentUsed.toFixed(2)}%`);
+            const diskTable = [totalBytes, freeBytes, usedBytes, percentUsed];
+
+            resolve(diskTable);
+        });
     });
 }
 

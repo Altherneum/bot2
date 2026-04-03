@@ -7,7 +7,6 @@ function createSystemEmbed(systemInfo) {
         .addFields(
             { name: 'CPU Load (Now)', value: systemInfo.LoadNow, inline: true },
             { name: 'CPU Load (15m)', value: systemInfo.LoadAvg, inline: true },
-            { name: 'RAM Usage', value: systemInfo.ramUsage, inline: true },
             { name: 'Google Ping (fetch)', value: systemInfo.googlePing, inline: true },
             { name: 'GitHub Ping (fetch)', value: systemInfo.githubPing, inline: true },
             { name: 'Google Ping (CLI)', value: systemInfo.googlePing2, inline: true },
@@ -15,7 +14,12 @@ function createSystemEmbed(systemInfo) {
             { name: 'Uptime', value: systemInfo.uptime, inline: false },
             { name: 'Total RAM', value: systemInfo.totalRam, inline: true },
             { name: 'Used RAM', value: systemInfo.usedRam, inline: true },
-            { name: 'Free RAM', value: systemInfo.ramFree, inline: true }
+            { name: 'Free RAM', value: systemInfo.ramFree, inline: true },
+            { name: 'RAM Usage', value: systemInfo.ramUsage, inline: true },
+            { name: 'Total Disk', value: systemInfo.diskTotal, inline: true },
+            { name: 'Free Disk', value: systemInfo.diskFree, inline: true },
+            { name: 'Used Disk', value: systemInfo.diskUsed, inline: true },
+            { name: 'Pecentage Disk usage', value: systemInfo.diskPercentUsed, inline: true }
         )
         .setTimestamp()
         .setFooter({ text: 'System Monitoring' });

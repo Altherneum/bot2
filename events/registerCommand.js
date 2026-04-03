@@ -17,7 +17,7 @@ module.exports = {
                 commands.push(command.data.toJSON());
                 client.commands.set(command.data.name, command);
             } else {
-                console.log(`[WARNING] The command at ${file} is missing "data" or "execute"`);
+                console.warn("🚩 The command at ${file} is missing 'data' or 'execute'");
             }
         }
 
@@ -25,23 +25,25 @@ module.exports = {
 
         (async () => {
             try {
-                console.log(`Started refreshing ${commands.length} application (/) commands.`);
+                console.log(`⌚ Started refreshing ${commands.length} application (/) commands.`);
 
                 // For guild-specific commands (instant update)
-               /*  await rest.put(
+               /*
+               await rest.put(
                     Routes.applicationGuildCommands(clientId, guildId),
                     { body: commands }
-                ); */
+                );
+                */
 
                 // For global commands (takes up to 1 hour)
                 await rest.put(Routes.applicationCommands(clientId), { body: commands });
 
-                console.log('Successfully reloaded application (/) commands.');
+                console.log('✅ Successfully reloaded application (/) commands.');
             } catch (error) {
-                console.error('Error registering commands:', error);
+                console.error('🚩 Error registering commands:', error);
             }
         })();
-        
-        console.log('Loaded commands:', [...client.commands.keys()]); // Add this to debug
+
+        console.log('ℹ️ Loaded commands:', [...client.commands.keys()]);
     },
 };
