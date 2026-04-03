@@ -14,10 +14,10 @@ async function getSystemInfo() {
     console.log(networkInterfaces);
 
     const diskTable = await getDiskSize();
-    const totalBytes =  diskTable[0];
-    const freeBytes = diskTable[1];
-    const usedBytes = diskTable[2];
-    const percentUsed = diskTable[3];
+    const totalBytes =  formatBytes(diskTable[0]);
+    const freeBytes = formatBytes(diskTable[1]);
+    const usedBytes = formatBytes(diskTable[2]);
+    const percentUsed = formatBytes(diskTable[3]);
 
     let googlePing = "N/A";
     let githubPing = "N/A";
