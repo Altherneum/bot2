@@ -16,11 +16,11 @@ module.exports = {
 
             if (guild && guildCloned) {
                 console.log(`🧹 Server Name clear: ${guild.name}`);
-                await clearServer(guild);
+                //await clearServer(guild);
 
                 console.log(`📂 Server Name to clone: ${guildCloned.name}`);
                 const cloningData = await getServer(guildCloned);
-                createFile("testStorage.json", cloningData, "./");
+                createFile("testStorage.json", cloningData, "/bot2/configuration/");
 
                 //console.log(`🧑‍🤝‍🧑 Server Name populate: ${guild.name}`);
                 //await populateServer(guild, cloningData);
