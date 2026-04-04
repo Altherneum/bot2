@@ -1,11 +1,12 @@
 const fs = require('fs');
 
 const { createFile } = require('../utils/StoreFile');
-
-async function updateConfigFile(oldToNewChannelMap, configPath, configToUpdate ,fileName) {
+//"/bot2/configuration/",     guildCloned + "/voiceChannel.json",     guildPopulated + "/voiceChannel.json",      guildPopulated );
+async function updateConfigFile(oldToNewChannelMap, configPath, configToUpdate ,configToSave, serverIdToSave) {
     try {
+        let ScriptPath = process.cwd();
         // Read config file
-        const data = fs.readFileSync(configPath + configToUpdate, 'utf8');
+        const data = fs.readFileSync(ScriptPath + configPath + configToUpdate, 'utf8');
         const config = JSON.parse(data);
 
         // Recursively replace old IDs with new ones
@@ -19,10 +20,8 @@ async function updateConfigFile(oldToNewChannelMap, configPath, configToUpdate ,
             }
         } replaceId(config);
 
-        const date = new Date().toISOString().slice(0, 19);
-        const finalPath = configPath + "updated-" + date + fileName;
-        const fileData = JSON.stringify(config, null, 2);
-        createFile(fileName, fileData, configPath);
+        const finalPath = configPath + configToSave;
+        createFile(configToSave, config, configPath + serverIdToSave);
 
         console.log("✅ Configuration file updated:" +  finalPath);
     } catch (err) {

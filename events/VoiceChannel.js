@@ -1,5 +1,7 @@
 const { Events, PermissionFlagsBits } = require('discord.js');
-const config = require('../configuration/voiceChannel.json');
+const configGlobal = require('../config.json');
+const serverID = configGlobal.guildId;
+const config = require("../configuration/" + serverID + "/voiceChannel.json");
 
 const mainCategory = config.voiceChannelDestinationCategory; // Replace with your Category ID
 const triggerChannel = config.voiceChannelTrigger; // Replace with the "Join to Create" Channel ID

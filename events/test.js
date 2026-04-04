@@ -32,7 +32,7 @@ module.exports = {
                 //
                 console.log("⏰ Mise à jour de la configuration en cours ...");
                 const channelMap = data.channelMap;
-                await updateConfigFile(channelMap, "/bot2/configuration/", guildCloned + "/voiceChannel.json", guildPopulated + "/voiceChannel.json");
+                await updateConfigFile(channelMap, "/bot2/configuration/", guildCloned + "/voiceChannel.json", "/voiceChannel.json", guildPopulated );
                 console.log("📚 Fin de la mise à jour de la configuration !");
             }
             else {
