@@ -5,6 +5,6 @@ module.exports = {
     once: true,
     execute(client) {
         console.log(`✅ Connected as ${client.user.tag}`);
-        require('./events/rateLimit.js')(client);
+        require('./rateLimit.js')(client);
     },
 };

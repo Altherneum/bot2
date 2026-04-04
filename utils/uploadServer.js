@@ -1,13 +1,16 @@
-const { Client, GatewayIntentBits, ChannelType } = require('discord.js');
+const { Client, GatewayIntentBits, ChannelType, PermissionFlagsBits } = require('discord.js');
 
-const typeMap = {
-    'GUILD_TEXT': ChannelType.GuildText,
-    'GUILD_VOICE': ChannelType.GuildVoice,
-    'GUILD_CATEGORY': ChannelType.GuildCategory,
-    'GUILD_FORUM': ChannelType.GuildForum,
-    'GUILD_ANNOUNCEMENT': ChannelType.GuildAnnouncement,
-    'GUILD_STAGE_VOICE': ChannelType.GuildStageVoice,
-};
+function getChannelTypeString(type) {
+    switch (type) {
+        case 0: return 'GUILD_TEXT';
+        case 2: return 'GUILD_VOICE';
+        case 4: return 'GUILD_CATEGORY';
+        case 5: return 'GUILD_ANNOUNCEMENT';
+        case 13: return 'GUILD_STAGE_VOICE';
+        case 15: return 'GUILD_FORUM';
+        default: return null;
+    }
+}
 
 async function populateServer(server, template) {
     console.log("Start populate : " + server.name);
@@ -79,7 +82,7 @@ async function populateServer(server, template) {
 
             let channelOptions = {
                 name: chData.name,
-                type: typeMap[chData.type],
+                type: getChannelTypeString(chData.type),
                 topic: chData.topic,
                 nsfw: chData.nsfw,
                 rateLimitPerUser: chData.rateLimitPerUser,
@@ -90,7 +93,7 @@ async function populateServer(server, template) {
             };
 
             // Add forum-specific fields if applicable
-            if (chData.type === 'GUILD_FORUM') {
+            if (getChannelTypeString(chData.type) === 'GUILD_FORUM') {
                 channelOptions.availableTags = chData.availableTags || [];
                 channelOptions.defaultAutoArchiveDuration = chData.defaultAutoArchiveDuration;
                 channelOptions.defaultForumLayout = chData.defaultForumLayout;
@@ -99,8 +102,7 @@ async function populateServer(server, template) {
             }
 
             await server.channels.create(channelOptions);
-
-            console.log("🕰 Création du salon : " + chData.name + " ; " + typeMap[chData.type]);
+            console.log("🕰 Création du salon : " + chData.name + " ; " + getChannelTypeString(chData.type));
         } catch (err) {
             console.warn(`⚠️ Could not create channel ${chData.name}:`, err.message);
         }
