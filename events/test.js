@@ -28,14 +28,44 @@ module.exports = {
                 console.log(`🧑‍🤝‍🧑 Server Name populate: ${guildPopulated.name}`);
                 const data = await populateServer(guildPopulated, cloningData);
                 
-                /*
-                WIP
-                */
-                //
                 console.log("⏰ Mise à jour de la configuration en cours ...");
                 const channelMap = data.channelMap;
                 await updateConfigFile(channelMap, "/bot2/configuration/", guildCloned + "/voiceChannel.json", "/voiceChannel.json", guildPopulated );
                 console.log("📚 Fin de la mise à jour de la configuration !");
+                
+                /*
+                WIP
+                - Make load from Json
+                - When server is done duplicating ;
+                - - "rulesChannelId": "1081932471408529490",
+                - - "safetyAlertsChannelId": "1081947188722155601",
+                - - "publicUpdatesChannelId": "1081932471408529492",
+                - - "verificationLevel": 1,
+                - - "explicitContentFilter": 2,
+                - - "systemChannelId": "1081941784252403742",
+                - - "defaultMessageNotifications": 1,
+                - - "afkTimeout": 300,
+                - - "features": [
+                    "AUTO_MODERATION",
+                    "PREVIEW_ENABLED",
+                    "GUILD_ONBOARDING",
+                    "AUTOMOD_TRIGGER_USER_PROFILE",
+                    "COMMUNITY",
+                    "GUILD_SERVER_GUIDE",
+                    "SOUNDBOARD",
+                    "WELCOME_SCREEN_ENABLED",
+                    "NEWS",
+                    "MEMBER_VERIFICATION_GATE_ENABLED",
+                    "GUILD_ONBOARDING_EVER_ENABLED",
+                    "GUILD_ONBOARDING_HAS_PROMPTS",
+                    "MEMBER_VERIFICATION_MANUAL_APPROVAL",
+                    "GUESTS_ENABLED",
+                    "CHANNEL_ICON_EMOJIS_GENERATED"
+                ],
+                - - "afkChannelId": "1081943448514482246",
+                - - "preferredLocale": "fr",
+                */
+                //
             }
             else {
                 console.log("⚠️ Server not found in cache.");
