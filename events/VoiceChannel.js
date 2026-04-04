@@ -1,4 +1,5 @@
 const { Events, PermissionFlagsBits } = require('discord.js');
+
 const configGlobal = require('../config.json');
 const serverID = configGlobal.guildId;
 const config = require("../configuration/" + serverID + "/voiceChannel.json");
@@ -10,55 +11,51 @@ const temporaryChannels = new Set();
 module.exports = {
     name: Events.VoiceStateUpdate,
     async execute(oldState, newState) {
-        const { channelID: oldChannelId, channel: oldChannel } = oldState;
-        const { channelID: newChannelId, guild, member } = newState;
+        const { channel: oldChannel } = oldState;
+        const { channel: newChannel, guild, member } = newState;
 
-        if (newChannelId === triggerChannel) {
+        // 1. User joins the "Join to Create" channel
+        if (newChannel && newChannel.id === triggerChannel) {
+            console.log("🆕 Nouvelle tentative de création d'un salon vocal par " + member.user.tag);
+
             try {
-                const channel = await guild.channels.create(
-                    `${member.user.username}'s channel`,
-                    { 
-                        type: 'GUILD_VOICE', // Use 'GUILD_VOICE' for v14+
-                        parent: mainCategory,
-                        permissionOverwrites: [
-                            {
-                                id: member.id,
-                                allow: [PermissionFlagsBits.ManageChannels] // Correct flag name
-                            }
-                        ]
-                    }
-                );
-                
-                await newState.setChannel(channel);
+                const channel = await guild.channels.create({
+                    name: member.user.tag,
+                    type: 2, // 'GUILD_VOICE'
+                    parent: mainCategory,
+                    permissionOverwrites: [
+                        {
+                            id: member.id,
+                            allow: [PermissionFlagsBits.ManageChannels]
+                        }
+                    ]
+                });
+                console.log("  ☑️ Salon vocal crée pour " + member.user.tag);
+
+                await member.voice.setChannel(channel);
                 temporaryChannels.add(channel.id);
+                console.log("  🎤 Déplacement dans le salon vocal de " + member.user.tag);
+            } catch (error) {
+                console.error("  ⚠️ Erreur lors de la création du salon vocal : " + error);
             }
-            catch (error) {
-                console.error('Error creating channel:', error);
-            }
+
+            return; // Prevent further processing in this tick
         }
-    }
-}
 
-module.exports = {
-    name: Events.VoiceStateUpdate,
-    async execute(oldState, newState) {
-        const { channelID: oldChannelId, channel: oldChannel } = oldState;
-        const { channelID: newChannelId } = newState;
-
-        // Delete channel if it becomes empty
+        // 2. Channel cleanup: Delete if empty and was temporary
         if (
-            oldChannel && 
-            oldChannel.members.size === 0 && 
-            temporaryChannels.has(oldChannelId) && 
-            oldChannelId !== newChannelId
+            oldChannel &&
+            oldChannel.members.size === 0 &&
+            temporaryChannels.has(oldChannel.id) &&
+            (!newChannel || newChannel.id !== oldChannel.id)
         ) {
             try {
                 await oldChannel.delete();
-                temporaryChannels.delete(oldChannelId);
-            }
-            catch (error) {
-                console.error('Error deleting channel:', error);
+                temporaryChannels.delete(oldChannel.id);
+                console.log("☑️ Salon vocal supprimé par " + member.user.tag);
+            } catch (error) {
+                console.log("⚠️ Erreur lors de la suppression du salon vocal par " + member.user.tag + " ; " + erreur);
             }
         }
     }
-}
+};

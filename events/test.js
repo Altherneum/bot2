@@ -1,4 +1,6 @@
 const { Events } = require('discord.js');
+let doTest = false;
+
 const { populateServer } = require('../utils/uploadServer');
 const { getServer } = require('../utils/duplicateServer');
 const { clearServer } = require('../utils/deleteServer');
@@ -12,10 +14,10 @@ module.exports = {
         console.log("🪧 Chargement des tests !");
 
         async function test(){
-            const guildCloned = client.guilds.cache.get('1489696430758170646');
+            const guildCloned = client.guilds.cache.get('1081921426333909072');
             const guildPopulated = client.guilds.cache.get('1489988288365461554');
 
-            if (guildPopulated && guildCloned) {
+            if (guildPopulated && guildCloned && doTest) {
                 console.log(`🧹 Server Name clear: ${guildPopulated.name}`);
                 await clearServer(guildPopulated);
 
