@@ -1,4 +1,5 @@
 const { Client, GatewayIntentBits, ChannelType, PermissionFlagsBits } = require('discord.js');
+const { updateConfigFile } = require('./configurationUpdater');
 
 function getChannelTypeString(type) {
     switch (type) {
@@ -10,6 +11,10 @@ function getChannelTypeString(type) {
         case 15: return 'GUILD_FORUM';
         default: return null;
     }
+}
+
+function delay(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 async function populateServer(server, template) {
@@ -36,6 +41,7 @@ async function populateServer(server, template) {
         } catch (err) {
             console.warn(`⚠️ Could not create role ${roleData.name}:`, err.message);
         }
+        await delay(1000);
     }
 
     // Add @everyone role mapping
@@ -64,13 +70,15 @@ async function populateServer(server, template) {
         } catch (err) {
             console.warn(`⚠️ Could not create category ${catData.name}:`, err.message);
         }
+        await delay(1000);
     }
 
+    const channelMap = new Map(); // old ID → new Category channel
     // === Step 3: Create Other Channels (Text, Voice, Forum, etc.) ===
     const otherChannels = template.channels.filter(ch => ch.type !== 'GUILD_CATEGORY');
-
     for (const chData of otherChannels) {
         try {
+            console.log("🕰 Création du salon : " + chData.name + " ; " + getChannelTypeString(chData.type));
             const parent = categoryMap.get(chData.parentId) || null;
 
             const channelPermissions = chData.permissions?.map(perm => ({
@@ -82,7 +90,7 @@ async function populateServer(server, template) {
 
             let channelOptions = {
                 name: chData.name,
-                type: getChannelTypeString(chData.type),
+                type: chData.type,
                 topic: chData.topic,
                 nsfw: chData.nsfw,
                 rateLimitPerUser: chData.rateLimitPerUser,
@@ -102,14 +110,21 @@ async function populateServer(server, template) {
             }
 
             await server.channels.create(channelOptions);
-            console.log("🕰 Création du salon : " + chData.name + " ; " + getChannelTypeString(chData.type));
+            channelMap.set(oldChannelId, newChannel.id);
+            console.log("📗 Salon crée : " + chData.name + " ; " + getChannelTypeString(chData.type));
         } catch (err) {
             console.warn(`⚠️ Could not create channel ${chData.name}:`, err.message);
         }
+        await delay(1000);
     }
+    console.log('🎉 Serveur crée et peuplé avec succès !');
+    
+    console.log("⏰ Mise à jour de la configuration en cours ...");
+    const configPath = path.join(__dirname, "/home/admin/repo/bot2/bot2/configuration/" + "voiceChannel.json", 'config.json');
+    await updateConfigFile(channelMap, configPath);
+    console.log("📚 Fin de la mise à jour de la configuration !");
 
-    console.log('Server populated successfully!');
-    return { roleMap, categoryMap };
+    return { roleMap, categoryMap, channelMap };
 }
 
 module.exports = { populateServer };
