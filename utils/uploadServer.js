@@ -1,5 +1,4 @@
 const { Client, GatewayIntentBits, ChannelType, PermissionFlagsBits } = require('discord.js');
-const { updateConfigFile } = require('./configurationUpdater');
 
 function getChannelTypeString(type) {
     switch (type) {
@@ -80,7 +79,6 @@ async function populateServer(server, template) {
         try {
             console.log("🕰 Création du salon : " + chData.name + " ; " + getChannelTypeString(chData.type));
             const parent = categoryMap.get(String(chData.parentId))?.id || null;
-            console.log("------------ parent ID : " + parent)
 
             const channelPermissions = chData.permissions?.map(perm => ({
                 id: roleMap.get(perm.id) || perm.id,
@@ -119,10 +117,6 @@ async function populateServer(server, template) {
         await delay(1000);
     }
     console.log('🎉 Serveur crée et peuplé avec succès !');
-    
-    console.log("⏰ Mise à jour de la configuration en cours ...");
-    await updateConfigFile("config.json", channelMap, "/home/admin/repo/bot2/bot2/configuration/"+ "voiceChannel.json");
-    console.log("📚 Fin de la mise à jour de la configuration !");
 
     return { roleMap, categoryMap, channelMap };
 }

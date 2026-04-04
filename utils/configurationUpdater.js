@@ -1,9 +1,11 @@
 const fs = require('fs');
 
-async function updateConfigFile(oldToNewChannelMap, configPath) {
+const { createFile } = require('../utils/StoreFile');
+
+async function updateConfigFile(oldToNewChannelMap, configPath, configToUpdate ,fileName) {
     try {
         // Read config file
-        const data = fs.readFileSync(configPath, 'utf8');
+        const data = fs.readFileSync(configPath + configToUpdate, 'utf8');
         const config = JSON.parse(data);
 
         // Recursively replace old IDs with new ones
@@ -15,13 +17,14 @@ async function updateConfigFile(oldToNewChannelMap, configPath) {
                     replaceId(obj[key]);
                 }
             }
-        }
+        } replaceId(config);
 
-        replaceId(config);
+        const date = new Date().toISOString().slice(0, 19);
+        const finalPath = configPath + "updated-" + date + fileName;
+        const fileData = JSON.stringify(config, null, 2);
+        createFile(fileName, fileData, configPath);
 
-        // Save updated config
-        fs.writeFileSync(configPath + "-updated", JSON.stringify(config, null, 2), 'utf8');
-        console.log("✅ Configuration file updated:" +  configPath + "-updated");
+        console.log("✅ Configuration file updated:" +  finalPath);
     } catch (err) {
         console.error(`❌ Failed to update config:`, err.message);
     }

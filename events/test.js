@@ -3,6 +3,7 @@ const { populateServer } = require('../utils/uploadServer');
 const { getServer } = require('../utils/duplicateServer');
 const { clearServer } = require('../utils/deleteServer');
 const { createFile } = require('../utils/StoreFile');
+const { updateConfigFile } = require('../utils/configurationUpdater');
 
 module.exports = {
     name: Events.ClientReady,
@@ -20,10 +21,19 @@ module.exports = {
 
                 console.log(`📂 Server Name to clone: ${guildCloned.name}`);
                 const cloningData = await getServer(guildCloned);
-                createFile("testStorage.json", cloningData, "/bot2/configuration/");
+                createFile("backup.json", cloningData, "/bot2/configuration/" + guildCloned + "/");
 
                 console.log(`🧑‍🤝‍🧑 Server Name populate: ${guildPopulated.name}`);
-                await populateServer(guildPopulated, cloningData);
+                const data = await populateServer(guildPopulated, cloningData);
+                
+                /*
+                WIP
+                */
+                //
+                console.log("⏰ Mise à jour de la configuration en cours ...");
+                const channelMap = data.channelMap;
+                await updateConfigFile(channelMap, "/bot2/configuration/", guildCloned + "/voiceChannel.json", guildPopulated + "/voiceChannel.json");
+                console.log("📚 Fin de la mise à jour de la configuration !");
             }
             else {
                 console.log("⚠️ Server not found in cache.");
