@@ -11,7 +11,7 @@ module.exports = {
         console.log("🪧 Chargement des tests !");
 
         async function test(){
-            const guildCloned = client.guilds.cache.get('1081921426333909072');
+            const guildCloned = client.guilds.cache.get('1489696430758170646');
             const guildPopulated = client.guilds.cache.get('1489988288365461554');
 
             if (guildPopulated && guildCloned) {
